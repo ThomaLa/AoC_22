@@ -1,1 +1,9 @@
 # Advent of code 2022
+
+Playing with julia this year, hopefully will stick to it.
+
+The code doesn't work as-is, you'd need to add a `to_path(arg)` function that
+converts an argument into an absolute path to your downloaded inputs.
+
+(Who am I kidding, no one will ever use these anyways)
+

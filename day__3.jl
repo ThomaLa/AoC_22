@@ -1,4 +1,3 @@
-to_path(arg) = "/google/src/cloud/tlapotre/julia/google3/experimental/users/tlapotre/aoc_22/$arg.txt"
 
 open(to_path(ARGS[1]), "r") do input
   priority(c) = c < 'a' ? 27 + c - 'A' : 1 + c - 'a'
