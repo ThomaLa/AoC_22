@@ -2,8 +2,11 @@
 
 Playing with julia this year, hopefully will stick to it.
 
-The code doesn't work as-is, you'd need to add a `to_path(arg)` function that
-converts an argument into an absolute path to your downloaded inputs.
+The code doesn't work as-is, you'd need to change the `to_path(arg)` function in
+`base.jl` to put a typical path to your downloaded inputs.
+
+Once this is done, confirm I'm not lying by storing some inputs somewhere and
+running e.g. `julia day_32.jl test`.
 
 (Who am I kidding, no one will ever use these anyways)
 

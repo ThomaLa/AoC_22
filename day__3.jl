@@ -1,5 +1,6 @@
+include("base.jl")
 
-open(to_path(ARGS[1]), "r") do input
+open(Personal.to_path(ARGS[1]), "r") do input
   priority(c) = c < 'a' ? 27 + c - 'A' : 1 + c - 'a'
   group = ["","",""]
   costs = 0

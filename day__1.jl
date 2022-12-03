@@ -1,5 +1,6 @@
+include("base.jl")
 
-open(to_path(ARGS[1]), "r") do input
+open(Personal.to_path(ARGS[1]), "r") do input
   biggest = 0
   second = 0
   third = 0
