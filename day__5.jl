@@ -39,6 +39,6 @@ open(Personal.to_path(ARGS[1]), "r") do input
     move!(new_stacks, move, false)
   end
 
-  [old_stacks, new_stacks] .|> x->last.(x) |> println ∘ join
+  map.(last, [old_stacks, new_stacks]) .|> println ∘ join
 end
 
