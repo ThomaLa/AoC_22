@@ -14,7 +14,7 @@ open(Personal.to_path(ARGS[1]), "r") do input
     if isempty(token)
       continue
     elseif startswith(token, "move")
-      splits = parse.(Int, split(token)[2:2:end])
+      splits = parse.(Int, split(token)[2:2:6])
       push!(moves, splits)
     elseif startswith(strip(token), "[")
       push!(raw_stacks, token)
@@ -39,7 +39,6 @@ open(Personal.to_path(ARGS[1]), "r") do input
     move!(new_stacks, move, false)
   end
 
-  [old_stacks, new_stacks] .|> stacks -> (
-    stack[end] for stack in stacks) |> println ∘ join
+  [old_stacks, new_stacks] .|> x->last.(x) |> println ∘ join
 end
 
