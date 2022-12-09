@@ -1,61 +1,27 @@
 include("base.jl")
 
-function part1!(visible, max, tree, i, j)
-  if tree > max[1]
-    max[1] = tree
-    push!(visible, (i, j))
-  end
-end
-
-function part2!(seen, scores, tree, i, j)
-  scores[i][j] *= seen[tree]
-  seen[1:tree] .= 1
-  seen[tree+1:end] .+= 1
-end
-
 open(Personal.to_path(ARGS[1]), "r") do input
-  trees = [[parse(Int, c) + 1 for c in line] for line in readlines(input)]
-  visible = Set()
-  scores = [[1 for _ in line] for line in trees]
-  
-  for (i, line) in enumerate(trees)
-    seen = [0 for _ in 1:10]
-    max = line[1:1]
-    push!(visible, (i, 1))
-    for (j, tree) in enumerate(line)
-      part1!(visible, max, tree, i, j)
-      part2!(seen, scores, tree, i, j)
-    end
-    seen = [0 for _ in 1:10]
-    max = line[end:end]
-    push!(visible, (i, length(line)))
-    for j in length(line):-1:1
-      tree = line[j]
-      part1!(visible, max, tree, i, j)
-      part2!(seen, scores, tree, i, j)
-    end
+  n = 99
+  grid = zeros(Int, n, n)
+  for (i, line) in enumerate(eachline(input))
+    grid[i, :] = parse.(Int, collect(line))
   end
-  for (j, first) in enumerate(trees[1])
-    push!(visible, (1, j))
-    max = [first]
-    seen = [0 for _ in 1:10]
-    for (i, line) in enumerate(trees)
-      tree = line[j]
-      part1!(visible, max, tree, i, j)
-      part2!(seen, scores, tree, i, j)
+  visible = zeros(Int, size(grid))
+  scores = ones(Int, size(grid))
+  directions = ([0, 1], [1, 0], [-1, 0], [0, -1])
+  for i in 1:n, j in 1:n, direction in directions
+    position = [i, j] + direction
+    score = 1
+    while checkbounds(Bool, grid, position...) && grid[position...] < grid[i, j]
+      score += 1
+      pos += direction
     end
-  end
-  for (j, last) in enumerate(trees[end])
-    push!(visible, (length(trees), j))
-    max = [last]
-    seen = [0 for _ in 1:10]
-    for i in length(trees):-1:1
-      tree = trees[i][j]
-      part1!(visible, max, tree, i, j)
-      part2!(seen, scores, tree, i, j)
+    if !checkbounds(Bool, grid, position...)
+      visible[i, j] = 1
+      score -= 1
     end
+    scores[i,j] *= score
   end
-
-  println("Part 1: ", length(visible))
-  println("Part 2: ", max(max.(scores...)...))
+  println("Part 1: ", sum(visible))
+  println("Part 2: ", maximum(scores[2:end-1, 2:end-1]))
 end
