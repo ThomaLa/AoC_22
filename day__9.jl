@@ -15,6 +15,6 @@ open(Personal.to_path(ARGS[1]), "r") do input
     end
     push!(visited, positions[end])
   end
-  push!(visited, [0,0]) |> length |> println
+  visited |> length |> println
 end
 
