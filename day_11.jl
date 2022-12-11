@@ -2,17 +2,12 @@ include("base.jl")
 
 int(s) = parse(Int, s)
 
-function my_parse(expr)
-  op, right = split(expr)[2:3]
-  x -> op == "+" ? x + int(right) : x * (right == "old" ? x : int(right))
-end
-
 function create_monkey(lines)
-  starting_items = int.(split(split(lines[2], ": ")[2], ", "))
-  stress = my_parse(split(lines[3], " = ")[2])
-  divisible_by = int(split(lines[4], " ")[end])
-  true_monkey = int(split(lines[5], " ")[end])
-  false_monkey = int(split(lines[6], " ")[end])
+  starting_items = int.(split((last ∘ split)(lines[2], ": "), ", "))
+  stress = (eval ∘ Meta.parse)("old -> " * (last ∘ split)(lines[3], " = "))
+  divisible_by = (int ∘ last ∘ split)(lines[4])
+  true_monkey = (int ∘ last ∘ split)(lines[5])
+  false_monkey = (int ∘ last ∘ split)(lines[6])
   destination = x -> x % divisible_by == 0 ? true_monkey : false_monkey
   starting_items, stress, destination, divisible_by
 end
@@ -21,7 +16,7 @@ function turn!(monkeys, items, activities, manage)
   for (i, (stress, destination)) in enumerate(monkeys)
     activities[i] += length(items[i])
     while !isempty(items[i])
-      item = (manage ∘ stress ∘ popfirst!)(items[i])
+      item = (manage ∘ Base.invokelatest)(stress, popfirst!(items[i]))
       push!(items[1 + destination(item)], item)
     end
   end
