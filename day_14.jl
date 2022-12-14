@@ -10,7 +10,7 @@ function add_line!(cave, start, stop)
   end
 end
 
-function main()  # julia day_14.jl input part
+function main()  # julia day_14.jl input
   cave = Set()
   open(Personal.to_path(ARGS[1]), "r") do input
     for line in readlines(input)
@@ -22,9 +22,10 @@ function main()  # julia day_14.jl input part
   end
   max_depth = maximum(z for (_, z) in cave)
   total_sand = 0
+  part_1_done = false
   while !((500, 0) in cave)
     grain = [500, 0]
-    while ARGS[2] == "2" || grain[2] < max_depth
+    while true
       moved = false
       for direction in (0, -1, 1)
         if !((grain[1]+direction, grain[2]+1) in cave)
@@ -39,11 +40,12 @@ function main()  # julia day_14.jl input part
         break
       end
     end
-    if ARGS[2] == "1" && grain[2] == max_depth
-      break
+    if !part_1_done && grain[2] == max_depth
+      println("Part 1: ", total_sand)
+      part_1_done = true
     end
   end
-  println(total_sand)
+  println("Part 2: ", total_sand)
 end
 
 main()
