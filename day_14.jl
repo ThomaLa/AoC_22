@@ -23,26 +23,26 @@ function main()  # julia day_14.jl input
   max_depth = maximum(z for (_, z) in cave)
   total_sand = 0
   part_1_done = false
+  path = [[500, 0]]
   while !((500, 0) in cave)
-    grain = [500, 0]
     while true
       moved = false
       for direction in (0, -1, 1)
-        if !((grain[1]+direction, grain[2]+1) in cave)
-          grain += [direction, 1]
+        if !((path[end][1]+direction, path[end][2]+1) in cave)
+          push!(path, path[end] + [direction, 1])
           moved = true
           break
         end
       end
-      if !moved || grain[2] == max_depth + 1
+      if !part_1_done && path[end][2] == max_depth
+        println("Part 1: ", total_sand)
+        part_1_done = true
+      elseif !moved || path[end][2] == max_depth + 1
+        grain = pop!(path)
         push!(cave, (grain[1], grain[2]))
         total_sand += 1
         break
       end
-    end
-    if !part_1_done && grain[2] == max_depth
-      println("Part 1: ", total_sand)
-      part_1_done = true
     end
   end
   println("Part 2: ", total_sand)
