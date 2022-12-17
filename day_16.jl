@@ -41,6 +41,7 @@ function main()
   # Use more efficient data structures...
   encode = Dict{String, Int}(name => 1 << i for (i, name) in enumerate(keys(paths)))
   flows = Dict{String, Int}(name => valves[name].flow_rate for name in keys(encode))
+  println("Preprocessing done.")
 
   # Nothing fancy: best[open_valves] is the best flow with these valves open.
   function visit(position, time_left, open_valves, flow, best)
@@ -52,7 +53,7 @@ function main()
       new_time_left = time_left - paths[position][neighbor]
       neighbor_bit = encode[neighbor]
       if neighbor_bit & open_valves > 0 || new_time_left ≤ 0
-      continue
+        continue
       end
       visit(neighbor, new_time_left, open_valves | neighbor_bit,
             flow + new_time_left * flows[neighbor], best)
