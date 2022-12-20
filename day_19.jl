@@ -1,7 +1,5 @@
 include("base.jl")
 
-
-
 function handle(line, total_time)
   element_ids = Dict(zip(["ore", "clay", "obsidian", "geode"], 1:4))
   blueprint = zeros(Int, 4, 4)
